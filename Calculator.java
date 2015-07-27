@@ -33,7 +33,7 @@ public class Calculator {
 		  newstack.push(c);
 	     }
 	  else if (c == ')'){
-			System.out.println("hello");
+			
 			  while(!newstack.peek().equals('(')){
 						postfixExpression += newstack.peek()+" ";
 					 newstack.pop();
@@ -53,7 +53,7 @@ public class Calculator {
 	    		 if( operator(newstack.peek()) <= operator(c))
 	    		 {
 			    newstack.push(c);
-			    System.out.println("im ");
+			   
 	    		 }
 		       
 		       else if(operator(newstack.peek()) > operator(c))
@@ -62,7 +62,7 @@ public class Calculator {
 			  newstack.push(c);
 		       }
 	      else{
-	    	  System.out.println("coming in else");
+	    	  
 	      }}
 	 
 	
