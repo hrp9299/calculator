@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.StringTokenizer;
+import java.util.Stack;
 
 
 public class Calculator {
@@ -12,71 +14,70 @@ public class Calculator {
 	// this method converts infix expression to postfix and evaluates the answer
   public void infixtopost(String infixExpression){
 	  
-	  
+		  
 	  Stack<Character> newstack = new Stack<Character>();
+	  StringTokenizer tokenizer = new StringTokenizer(infixExpression);
 	  
-	  
-	  String postfixExpression = "";
-	  
-	  
+	  String postfixExpression ="";
+	
+	
 	  // this for loop goes to each and every characeter in string 
-	  // for different characters it has certain tasks to go through  
+	 // for different characters it has certain tasks to go through  
 	  for(int i = 0 ; i< infixExpression.length(); i++){
 		  
-	  char character = infixExpression.charAt(i);
-	
-	  if (character == '('){
-		  newstack.push(character);
-	  }
-	  else if (Character.isDigit(character) && Character.isDigit(infixExpression.charAt(i+1))){
-		  
-		  postfixExpression = postfixExpression + character + infixExpression.charAt(i+1) + " " ;
-	  }
-	  else  if ( Character.isDigit(character) && Character.isDigit(infixExpression.charAt(i-1))){
-			  postfixExpression =  postfixExpression ;
-    	}
-	  else if (Character.isDigit(character) && !Character.isDigit(infixExpression.charAt(i+1))){
-		  postfixExpression =  postfixExpression + character + " ";
-	  }
-	   else if (character == '+' || character == '-' || character == '/' || character == '*'){
+	  char c = infixExpression.charAt(i);
+	  if(Character.isDigit(c)){ 
+			
+		  postfixExpression += c + " ";}
+	  else if (c == '('){
+		  newstack.push(c);
+	     }
+	  else if (c == ')'){
+			
+			  while(!newstack.peek().equals('(')){
+						postfixExpression += newstack.peek()+" ";
+					 newstack.pop();
+				  }}
+				 
+	  else if (c == '+' || c == '-'||c == '*'||c =='/')
 		
-	   	   if (newstack.isEmpty()) 
-		    	newstack.push(character);
+	   
 		  
-		  else if (newstack.peek().equals('('))
-			   newstack.push(character);
+		   if (newstack.isEmpty()) {
+		    	newstack.push(c);}
+		  
+		  else if (newstack.peek().equals('(')){
+			   newstack.push(c);}
 	  
-	      else if(precedence1(newstack.peek(),character))
-			  newstack.push(character);
-		  
-		  else if(precedence(newstack.peek(), character))
+	      else if(newstack.peek() == '+' || newstack.peek() == '-'||newstack.peek() == '*'||newstack.peek() =='/'){
+	    		 if( operator(newstack.peek()) <= operator(c))
+	    		 {
+			    newstack.push(c);
+			   
+	    		 }
+		       
+		       else if(operator(newstack.peek()) > operator(c))
+		       { postfixExpression += newstack.peek()+" "; 
 			  newstack.pop();
-		    
-	 }
-		  else if (character == ')'){
-		
-		  while(!newstack.peek().equals('(')){
-					postfixExpression = postfixExpression + newstack.peek()+" ";
-				
-				  newstack.pop();
-			  }
-			 
-			  
-		  }
-	  
-	  else{}
-  }//for loop ends here
+			  newstack.push(c);
+		       }
+	      else{
+	    	  
+	      }}
+	 
+	
+ }//for loop ends here
 	
   while(!newstack.isEmpty()){ //this while loop pops and prints the remaining in the stack
 		
-	  postfixExpression = postfixExpression + newstack.peek()+ "";  
+	  postfixExpression = postfixExpression + newstack.peek()+" ";  
 		  newstack.pop(); 
 	
   }
 	 
-  postfixExpression = postfixExpression.replace("(","");
+ postfixExpression = postfixExpression.replace("(","");
   
-  System.out.println(" Post fix for equation is : " +postfixExpression);
+   System.out.println(" Post fix for equation is : " + postfixExpression);
 
   
 ///////////////////////////////evaluating post fix method starts from here   ///////////////
@@ -182,12 +183,7 @@ public class Calculator {
 	default: return 0;
 	}
 	}
-public static boolean precedence( char el, char dl)
-{ return (operator(el) > operator(dl));
-	}
-public  static boolean precedence1( char el, char dl)
-{ return (operator(el) < operator(dl));
-	}
+
 }
 
 
